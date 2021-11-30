@@ -1,1 +1,2 @@
-$enable-gradients == true;
+var cities = [];
+
