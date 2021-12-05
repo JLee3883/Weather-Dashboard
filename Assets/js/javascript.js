@@ -10,17 +10,35 @@
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 
-var cities = [];
 
-var openWeatherAPIKey = "ed05bf1e6d3bacd9772fb0967a763ef7";
-var lat = "";
-var lon = "";
+let openAPIKey = "ed05bf1e6d3bacd9772fb0967a763ef7";
+let cities = [];
+let cityInputEl=document.querySelector("#city")
 
+let formSumbitHandler = function(event){
+  event.preventDefault();
+  var city = cityInputEl.value.trim();
+  if(city){
+      getCityWeather(city);
+      get5Day(city);
+      cities.unshift({city});
+      cityInputEl.value = "";
+  } else{
+      alert("Please enter a City");
+  }
+}
 
-fetch("https://api.openweathermap.org/data/2.5/weather?q=portland&appid=ed05bf1e6d3bacd9772fb0967a763ef7")
-  .then(function (response) {
-    return response.json();
-})
+let saveSearch = function(){
+  localStorage.setItem("cities", JSON.stringify(cities));
+};
+
+const getWeather = function(city){
+  fetch `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openAPIKey}`
+    .then(async function (response) {
+      let data = await response.json();
+      displayWeather(data, city);
+  })
+}; 
 //   .then(function (data) {
 //     lat =  data.coord.lat;
 // 	lon = data.coord.lon;
@@ -29,9 +47,5 @@ fetch("https://api.openweathermap.org/data/2.5/weather?q=portland&appid=ed05bf1e
   
  
 // fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + openWeatherAPIKey);
-
-  
-
-
 
 
