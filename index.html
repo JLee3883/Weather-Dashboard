@@ -16,20 +16,26 @@
 
         <main class="container-fluid row">
             <nav class="navbar navbar-light bg-light">
-                <form class="form-inline">
+                <form class="form-inline" id = "city-submit">
                   <input class="form-control mr-sm-2" type="search" placeholder="Search for a City" aria-label="Search" class="form-input">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </nav>
-    
-
+            <section class="col-12 col-md-9">
+                <div class = "row border selected-city" id = "current-forecast">
+                    <div class = "col-12">
+                        <h2 id="searched-city"></h2>
+                        <div id = "current-weather-container" class = "list-group"></div>
+                    </div>  
+                </div>
+                <div class = "row border" id = "five-day-forecast">
+                        <h2 class= "col-12" id = "forecast"></h2>
+                        <div class = "d-flex" id = "fiveday-container"></div>
+                </div>  
             </section>
+
         </main>
     
-        
-
-
-
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>

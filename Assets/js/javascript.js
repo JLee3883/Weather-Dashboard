@@ -11,41 +11,71 @@
 // THEN I am again presented with current and future conditions for that city
 
 
-let openAPIKey = "ed05bf1e6d3bacd9772fb0967a763ef7";
+const openAPIKey = "ed05bf1e6d3bacd9772fb0967a763ef7";
 let cities = [];
 let cityInputEl=document.querySelector("#city")
+const citySubmitEl=document.querySelector("#city-submit");
 
 let formSumbitHandler = function(event){
   event.preventDefault();
-  var city = cityInputEl.value.trim();
-  if(city){
-      getCityWeather(city);
-      get5Day(city);
-      cities.unshift({city});
-      cityInputEl.value = "";
-  } else{
-      alert("Please enter a City");
-  }
+  let city = cityInputEl.value.trim();
+    if(city){
+        getCityWeather(city);
+        get5Day(city);
+        cities.unshift({city});
+        cityInputEl.value = "";
+    } else{
+        alert("Please enter a City");
+    } saveSearch();
 }
 
-let saveSearch = function(){
+const saveSearch = function(){
   localStorage.setItem("cities", JSON.stringify(cities));
 };
 
 const getWeather = function(city){
-  fetch `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openAPIKey}`
-    .then(async function (response) {
-      let data = await response.json();
+
+  let api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${openAPIKey}`
+
+  fetch (api)
+    .then(function (response) {
+      response.json() 
+    .then(function(data){
       displayWeather(data, city);
-  })
-}; 
-//   .then(function (data) {
-//     lat =  data.coord.lat;
-// 	lon = data.coord.lon;
-// 	return lat, lon;
-// })
+    });
+  });
+};
+
+
+const displayWeather = function(weather, searchCity){
   
- 
-// fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + openWeatherAPIKey);
+  weatherContainerEl.textContent= "";  
+  citySearchInputEl.textContent=searchCity;
+  console.log(weather);
 
+  let currentDate = document.createElement("span")
+  currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";
+  citySearchInputEl.appendChild(currentDate);
 
+  let tempEl = document.createElement("span");
+  tempEl.textContent = "Temperature: " + weather.main.temp + " °F";
+  tempEl.classList = "list-group-item"
+
+  let humidityEl = document.createElement("span");
+  humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
+  humidityEl.classList = "list-group-item"
+
+  let windEl = document.createElement("span");
+  windEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH";
+  windEl.classList = "list-group-item"
+
+  weatherContainerEl.appendChild(tempEl);
+  weatherContainerEl.appendChild(humidityEl);
+  weatherContainerEl.appendChild(windEl);
+
+  let lat = weather.coord.lat;
+  let lon = weather.coord.lon;
+  getUvIndex(lat,lon)
+}
+
+citySubmitEl.addEventListener("submit", formSumbitHandler);
