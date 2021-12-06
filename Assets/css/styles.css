@@ -17,3 +17,11 @@ span.favorable{
 .card-body{
     flex:auto
 }
+.search-column{
+    background-color: lightblue;
+}
+
+.list-group-item{
+    line-height: 0.5;
+    border: none;
+}
