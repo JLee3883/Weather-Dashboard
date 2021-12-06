@@ -8,6 +8,7 @@ const pastSearchButtonEl = document.querySelector("#past-search-buttons");
 const citySearchInputEl = document.querySelector("#searched-city");
 const forecastTitle = document.querySelector("#forecast");
 
+//Taking in user input and saving search
 const formSumbitHandler = function(event){
   event.preventDefault();
   let city = cityInputEl.value.trim();
@@ -44,27 +45,32 @@ const displayWeather = function(weather, searchCity){//
   weatherContainerEl.textContent= "";  //
   citySearchInputEl.textContent=searchCity;//
 
+  //Date with moment
   let currentDate = document.createElement("span")//
   currentDate.textContent=" (" + moment(weather.dt.value).format("MMM D, YYYY") + ") ";//
   citySearchInputEl.appendChild(currentDate);//
 
+  //Icon images
   let weatherIcon = document.createElement("img")//
   weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`);//
   citySearchInputEl.appendChild(weatherIcon);//
 
+  //Temp data
   let temperatureEl = document.createElement("span");
   temperatureEl.textContent = "Temperature: " + weather.main.temp + " °F";
   temperatureEl.classList = "list-group-item"
 
+  //Humidity data
   let humidityEl = document.createElement("span");
   humidityEl.textContent = "Humidity: " + weather.main.humidity + " %";
   humidityEl.classList = "list-group-item"
 
+  //Wind data
   let windEl = document.createElement("span");
   windEl.textContent = "Wind Speed: " + weather.wind.speed + " MPH";
   windEl.classList = "list-group-item"
 
-
+  //Appending all to the containers
   weatherContainerEl.appendChild(temperatureEl);
   weatherContainerEl.appendChild(humidityEl);
   weatherContainerEl.appendChild(windEl);
@@ -74,6 +80,7 @@ const displayWeather = function(weather, searchCity){//
   getUvIndex(lat,lon)
 }
 
+//fetching the UV
 const getUvIndex = function(lat,lon){
   let apiURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
 
@@ -85,6 +92,8 @@ const getUvIndex = function(lat,lon){
       });
   });
 }
+
+//Display for the UV and attaching the classes of color for weather conditions
 const displayUvIndex = function(index){
   let uvIndexEl = document.createElement("div");
   uvIndexEl.textContent = "UV Index: "
@@ -105,6 +114,8 @@ const displayUvIndex = function(index){
   uvIndexEl.appendChild(uvIndexValue);
   weatherContainerEl.appendChild(uvIndexEl);
 }
+
+//Fetching the 5 day forecast
 const get5Day = function(city){
   let api = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
 
@@ -117,6 +128,8 @@ const get5Day = function(city){
   });
 };
 
+
+//Displaying the 5 day forecast
 const display5Day = function(weather){
   forecastContainerEl.textContent = ""
   forecastTitle.textContent = "5 Day Forecast:";
@@ -134,8 +147,6 @@ const display5Day = function(weather){
      forecastDate.classList = "card-header text-center"
      forecastEl.appendChild(forecastDate);
 
-     
- 
      let weatherIcon = document.createElement("img")
      weatherIcon.classList = "card-body text-center";
      weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${dailyForecast.weather[0].icon}@2x.png`);  
